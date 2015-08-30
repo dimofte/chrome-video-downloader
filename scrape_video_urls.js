@@ -3,25 +3,30 @@
  */
 
 var allText = document.body.innerHTML.toString();
-var video_urls = allText
+var videoUrls = allText
     // find urls that point to movies
     .match(/("|')(http|https):\/\/[^("|'|,)]*?\.(mp4|avi|flv|f4v|ogv|ogg)[^("|')]*?("|')/gi) || [];
 
 // remove quotes from around the matched urls and sort the result
-video_urls
-    .map(function(quotedString) {
+videoUrls = videoUrls.map(function(quotedString) {
       return quotedString.substr(1, quotedString.length-2)
-    })
-    .sort();
+    }).sort();
 
 // Remove duplicates
 var i = 0;
-while (i < video_urls.length) {
-  if (((i > 0) && (video_urls[i] == video_urls[i - 1])) || (video_urls[i] == '')) {
-    video_urls.splice(i, 1);
+while (i < videoUrls.length) {
+  if (((i > 0) && (videoUrls[i] == videoUrls[i - 1])) || (videoUrls[i] == '')) {
+    videoUrls.splice(i, 1);
   } else {
     ++i;
   }
 }
 
-chrome.extension.sendRequest(video_urls);
+console.log("vids", videoUrls);
+var videosData = videoUrls.map(function(videoUrl) {
+  return {
+    url: videoUrl,
+    name: videoUrl.match(/[^\/]+?\.(mp4|avi|flv|f4v|ogv|ogg)/i)[0]
+  }
+});
+chrome.extension.sendRequest(videosData);

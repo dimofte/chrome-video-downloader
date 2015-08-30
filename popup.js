@@ -1,11 +1,13 @@
 var links = [];
 
 // Display all links in the table dom element.
+// TODO: add maybe a simple template engine...
 function showLinks() {
 
   console.log("links", links);
-  if (links.length === 0) {
-    document.getElementById("notifications").innerHTML = 'No videos found';
+  document.getElementById("notifications").innerHTML = links.length ? '' : 'No videos found';
+
+  if (!links.length) {
     return;
   }
 
@@ -16,17 +18,23 @@ function showLinks() {
 
   for (var i = 0; i < links.length; ++i) {
 
+    // icon to open in new window
     var col0 = document.createElement('td');
     var link = document.createElement('a');
-    link.href = links[i];
-    link.innerHTML = 'link';
+    var imgOpen = document.createElement('img');
+    link.href = links[i].url;
+    imgOpen.src = 'down_arrow.png';
+    link.appendChild(imgOpen);
     col0.appendChild(link);
 
+    // icon to download
     var col1 = document.createElement('td');
-    col1.innerHTML = 'download';
+    var imgDown = document.createElement('img');
+    imgDown.src = 'new_window.png';
+    col1.appendChild(imgDown);
 
     var col2 = document.createElement('td');
-    col2.innerText = 'foo.mp4';
+    col2.innerText = links[i].name;
     col2.style.whiteSpace = 'nowrap';
 
     var row = document.createElement('tr');
@@ -53,11 +61,9 @@ function downloadCheckedLinks() {
 // Add links to the links array and show them.
 // The scrapper is injected into all frames of the active tab,
 // so this listener may be called multiple times.
-chrome.extension.onRequest.addListener(function(foundLinks) {
-  console.log("found links", foundLinks);
-
-  for (var index in foundLinks) {
-    links.push(foundLinks[index]);
+chrome.extension.onRequest.addListener(function(videosData) {
+  for (var index in videosData) {
+    links.push(videosData[index]);
   }
   showLinks();
 });

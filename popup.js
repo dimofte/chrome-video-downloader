@@ -12,26 +12,27 @@ function showLinks() {
   }
 
   var linksTable = document.getElementById('links');
-  while (linksTable.children.length > 1) {
+  while (linksTable.children.length > 0) {
     linksTable.removeChild(linksTable.children[linksTable.children.length - 1])
   }
 
-  for (var i = 0; i < links.length; ++i) {
-
-    // icon to open in new window
-    var col0 = document.createElement('td');
-    var link = document.createElement('a');
-    var imgOpen = document.createElement('img');
-    link.href = links[i].url;
-    imgOpen.src = 'down_arrow.png';
-    link.appendChild(imgOpen);
-    col0.appendChild(link);
+  for (var i = 0; i < links.length; i++) {
 
     // icon to download
-    var col1 = document.createElement('td');
+    var col0 = document.createElement('td');
     var imgDown = document.createElement('img');
-    imgDown.src = 'new_window.png';
-    col1.appendChild(imgDown);
+    imgDown.src = 'down_arrow.png';
+    col0.appendChild(imgDown);
+
+    // icon to open in new window
+    var col1 = document.createElement('td');
+    var imgOpen = document.createElement('img');
+    imgOpen.src = 'new_window.png';
+    imgOpen.setAttribute('data-url', links[i].url);
+    imgOpen.onclick = function(event) {
+      chrome.tabs.create({url: event.target.getAttribute('data-url')});
+    };
+    col1.appendChild(imgOpen);
 
     var col2 = document.createElement('td');
     col2.innerText = links[i].name;

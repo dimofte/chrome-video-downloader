@@ -22,15 +22,27 @@ function showLinks() {
     var col0 = document.createElement('td');
     var imgDown = document.createElement('img');
     imgDown.src = 'down_arrow.png';
+    imgDown.title = 'Download video';
+    imgDown.setAttribute('data-url', links[i].url);
+    imgDown.onclick = function(event) {
+      chrome.downloads.download({
+        url: event.target.getAttribute('data-url'),
+        saveAs: true
+      }, function(id) {});
+    };
     col0.appendChild(imgDown);
 
     // icon to open in new window
     var col1 = document.createElement('td');
     var imgOpen = document.createElement('img');
     imgOpen.src = 'new_window.png';
+    imgOpen.title = 'Open video in new tab';
     imgOpen.setAttribute('data-url', links[i].url);
     imgOpen.onclick = function(event) {
-      chrome.tabs.create({url: event.target.getAttribute('data-url')});
+      chrome.tabs.create({
+        url: event.target.getAttribute('data-url'),
+        active: false
+      });
     };
     col1.appendChild(imgOpen);
 
@@ -46,21 +58,8 @@ function showLinks() {
   }
 }
 
-
-// Download all visible checked links.
-function downloadCheckedLinks() {
-
-  return;
-  for (var i = 0; i < links.length; ++i) {
-    if (document.getElementById('check' + i).checked) {
-      chrome.downloads.download({url: links[i]}, function(id) {});
-    }
-  }
-  window.close();
-}
-
 // Add links to the links array and show them.
-// The scrapper is injected into all frames of the active tab,
+// The scraper is injected into all frames of the active tab,
 // so this listener may be called multiple times.
 chrome.extension.onRequest.addListener(function(videosData) {
   for (var index in videosData) {
@@ -69,10 +68,8 @@ chrome.extension.onRequest.addListener(function(videosData) {
   showLinks();
 });
 
+// Inject the scraper script into all frames in the active tab
 window.onload = function() {
-  //document.getElementById('download').onclick = downloadCheckedLinks;
-
-  // inject the scrapper script into all frames in the active tab
   chrome.windows.getCurrent(function (currentWindow) {
     chrome.tabs.query({active: true, windowId: currentWindow.id},
                       function(activeTabs) {

@@ -22,7 +22,6 @@ while (i < videoUrls.length) {
   }
 }
 
-console.log("vids", videoUrls);
 var videosData = videoUrls.map(function(videoUrl) {
   return {
     url: videoUrl,

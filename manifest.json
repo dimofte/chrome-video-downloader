@@ -1,7 +1,7 @@
 {
   "name": "Download Videos",
-  "description": "Select videos on a page and download them. This extension recognizes videos with mp4,avi,flv,f4v,ogv and ogg formats",
-  "version": "0.1",
+  "description": "Download (or open in new tab) any video found in the current page.",
+  "version": "0.2.1",
   "author": "Bogdan Dimofte",
   "minimum_chrome_version": "16.0.884",
   "permissions": [
@@ -13,6 +13,6 @@
   },
   "manifest_version": 2,
   "icons": {
-    "128": "video_download_blue.png"
+    "128": "assets/video_download_blue.png"
   }
 }

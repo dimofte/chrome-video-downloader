@@ -5,7 +5,9 @@ var links = [];
 function showLinks() {
 
   console.log("links", links);
-  document.getElementById("notifications").innerHTML = links.length ? '' : 'No videos found';
+  document.getElementById("notifications").innerHTML = links.length ?
+      '' :
+      'No videos found';
 
   if (!links.length) {
     return;
@@ -13,7 +15,7 @@ function showLinks() {
 
   var linksTable = document.getElementById('links');
   while (linksTable.children.length > 0) {
-    linksTable.removeChild(linksTable.children[linksTable.children.length - 1])
+    linksTable.removeChild(linksTable.children[linksTable.children.length - 1]);
   }
 
   for (var i = 0; i < links.length; i++) {
@@ -21,7 +23,7 @@ function showLinks() {
     // icon to download
     var col0 = document.createElement('td');
     var imgDown = document.createElement('img');
-    imgDown.src = 'down_arrow.png';
+    imgDown.src = 'assets/down_arrow.png';
     imgDown.title = 'Download video';
     imgDown.setAttribute('data-url', links[i].url);
     imgDown.onclick = function(event) {
@@ -35,7 +37,7 @@ function showLinks() {
     // icon to open in new window
     var col1 = document.createElement('td');
     var imgOpen = document.createElement('img');
-    imgOpen.src = 'new_window.png';
+    imgOpen.src = 'assets/new_window.png';
     imgOpen.title = 'Open video in new tab';
     imgOpen.setAttribute('data-url', links[i].url);
     imgOpen.onclick = function(event) {
